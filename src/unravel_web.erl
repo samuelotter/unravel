@@ -6,13 +6,15 @@
         ]).
 
 start() ->
-  Routes = [ {'_', [ {"/", root_handler, []}
+  Routes = [ {'_', [ {"/", cowboy_static, { priv_file, unravel
+                                          , "www/index.html"}}
                    , {"/stream/:id", unravel_stream_websocket, []}
+                   , {"/[...]", cowboy_static, {priv_dir, unravel, "www/"}}
                    ]}
            ],
   Dispatch = cowboy_router:compile(Routes),
   %% FIXME: Move to app?
-  application:ensure_all_started(cowboy),
+  application:ensure_all_started(unravel),
   cowboy:start_http(unravel_http_listener, 100, [{port, 8888}],
                     [{env, [{dispatch, Dispatch}]}]).
 
