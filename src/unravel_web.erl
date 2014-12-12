@@ -9,7 +9,8 @@ start() ->
   Routes = [ {'_', [ {"/", cowboy_static, { priv_file, unravel
                                           , "www/index.html"}}
                    , {"/stream/:id", unravel_stream_websocket, []}
-                   , {"/[...]", cowboy_static, {priv_dir, unravel, "www/"}}
+                   , {"/js/unravel.js", cowboy_static, { priv_file, unravel
+                                                       , "elm/js/unravel.js"}}
                    ]}
            ],
   Dispatch = cowboy_router:compile(Routes),

@@ -11,3 +11,4 @@ rel/example_project
 .rebar
 /.edts
 /.erlang.mk.packages.v2
+/priv/elm/js/unravel.js
