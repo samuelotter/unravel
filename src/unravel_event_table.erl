@@ -6,7 +6,10 @@
         , new/0
         , select/3
         , continue/1
+        , to_list/1
         ]).
+
+-include("unravel_event.hrl").
 
 %%% * Types ====================================================================
 
@@ -18,9 +21,9 @@
 
 %%% * API ======================================================================
 
--spec insert(Event :: unravel_event:event(), Table :: event_table()) -> ok.
-insert(Event, Table) ->
-  ets:insert(Table#event_table.table, Event).
+-spec insert(Event :: unravel_event:event(), Table :: event_table()) -> true.
+insert(Event, Table) when is_record(Event, event) ->
+    ets:insert(Table#event_table.table, Event).
 
 -spec new() -> event_table().
 new() ->
@@ -36,3 +39,6 @@ select(Start, End, Stream) ->
 
 continue(Continuation) ->
   ets:select(Continuation).
+
+to_list(Table) ->
+  ets:tab2list(Table#event_table.table).

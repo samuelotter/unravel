@@ -8,8 +8,8 @@
 
 %%% * Types ====================================================================
 
--type   timestamp() :: {pos_integer(), pos_integer(), pos_integer()}.
--opaque event()     :: #event{}.
+-type timestamp() :: {pos_integer(), pos_integer(), pos_integer()}.
+-type event()     :: #event{}.
 
 -export_type([ event/0
              ]).
