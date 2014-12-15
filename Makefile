@@ -1,5 +1,5 @@
 PROJECT = unravel
-DEPS = cowboy gproc
+DEPS = cowboy gproc jiffy
 include erlang.mk
 
 .PHONY: frontend

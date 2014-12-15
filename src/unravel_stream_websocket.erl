@@ -32,11 +32,19 @@ websocket_init(_Type, Req0, _Opts) ->
   {ok, Req, #state{}}.
 
 websocket_handle(_Msg, Req, State) ->
-  {reply, {text, <<"Init">>}, Req, State, hibernate}.
+  {ok, Req, State}.
 
 websocket_info(Info, Req, State) ->
-  Msg = lists:flatten(io_lib:format("~p", [Info])),
-  {reply, {text, list_to_binary(Msg)}, Req, State, hibernate}.
+  Msg = case Info of
+          {event, {Ms,S,Us}, Pid, Type} ->
+            [ {timestamp, Ms * 10.0e6 + S + Us * 10.0e-6}
+            , {pid, list_to_binary(pid_to_list(Pid))}
+            , {type, Type}
+            ];
+          X -> lists:flatten(io_lib:format("~p", [X]))
+        end,
+  Payload = jiffy:encode({Msg}),
+  {reply, {text, Payload}, Req, State, hibernate}.
 
 websocket_terminate(_Reason, _, _State) ->
   ok.
